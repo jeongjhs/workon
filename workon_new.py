@@ -338,12 +338,8 @@ class CJWorldAuthenticator:
 
         print(f"Time: {start_time} ~ {end_time}")
 
-        # Define all seats to try (004-001 through 004-008)
-        all_seats = ["004-001", "004-002", "004-003", "004-004", "004-005", "004-006", "004-007", "004-008"]
-
-        # Rotate starting position based on day to distribute load
-        start_index = day % len(all_seats)
-        seats_to_try = all_seats[start_index:] + all_seats[:start_index]
+        # Define seats in priority order
+        seats_to_try = ["004-001", "004-005", "004-002", "004-006", "004-003", "004-007", "004-004", "004-008"]
 
         print(f"Will try seats in order: {', '.join(seats_to_try)}")
 
