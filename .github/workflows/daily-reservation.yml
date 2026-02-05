@@ -2,7 +2,7 @@ name: Daily Seat Reservation
 
 on:
   schedule:
-    # TEST: Runs every 5 minutes for testing
+    # TEST: Runs every 3 minutes for testing (public repo)
     - cron: '*/3 * * * *'
   workflow_dispatch:  # Allows manual trigger
 
