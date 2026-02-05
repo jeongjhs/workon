@@ -2,8 +2,8 @@ name: Daily Seat Reservation
 
 on:
   schedule:
-    # Runs at 00:01 KST (15:01 UTC previous day)
-    - cron: '1 15 * * *'
+    # Runs at 08:03 KST (23:03 UTC previous day)
+    - cron: '3 23 * * *'
   workflow_dispatch:  # Allows manual trigger
 
 jobs:

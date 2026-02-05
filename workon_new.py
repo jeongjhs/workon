@@ -337,40 +337,31 @@ class CJWorldAuthenticator:
 
         print(f"Time: {start_time} ~ {end_time}")
 
-        # If date is even, try 004-001 first; if odd, try 004-002 first
-        if day % 2 == 0:
-            primary_seat = "004-001"
-            secondary_seat = "004-002"
-        else:
-            primary_seat = "004-002"
-            secondary_seat = "004-001"
+        # Define all seats to try (004-001 through 004-008)
+        all_seats = ["004-001", "004-002", "004-003", "004-004", "004-005", "004-006", "004-007", "004-008"]
 
-        print(f"Primary seat: {primary_seat}")
-        print(f"Secondary seat: {secondary_seat} (if primary fails)")
+        # Rotate starting position based on day to distribute load
+        start_index = day % len(all_seats)
+        seats_to_try = all_seats[start_index:] + all_seats[:start_index]
+
+        print(f"Will try seats in order: {', '.join(seats_to_try)}")
 
         # Access base office page
-        print("\n[1/3] Accessing base office page...")
+        print("\nAccessing base office page...")
         base_office_url = "https://cj.cj.net/conf/autonomousseat/user/baseoffice.aspx"
         self.session.get(base_office_url)
 
-        # First attempt
-        print(f"\n[2/3] Attempting to reserve seat {primary_seat}...")
-        success = self._try_reserve(date_str, primary_seat, start_time, end_time)
+        # Try each seat in order
+        for i, seat_id in enumerate(seats_to_try, 1):
+            print(f"\n[{i}/{len(seats_to_try)}] Attempting to reserve seat {seat_id}...")
+            success = self._try_reserve(date_str, seat_id, start_time, end_time)
 
-        if success:
-            print(f"Successfully reserved seat {primary_seat}!")
-            return True
+            if success:
+                print(f"Successfully reserved seat {seat_id}!")
+                return True
 
-        # Second attempt
-        print(f"\n[3/3] Attempting to reserve seat {secondary_seat}...")
-        success = self._try_reserve(date_str, secondary_seat, start_time, end_time)
-
-        if success:
-            print(f"Successfully reserved seat {secondary_seat}!")
-            return True
-        else:
-            print(f"Failed to reserve both seats")
-            return False
+        print(f"Failed to reserve any of the {len(seats_to_try)} seats")
+        return False
 
     def _try_reserve(self, date: str, seat_id: str, start_time: str, end_time: str) -> bool:
         """Attempt to reserve a seat"""
