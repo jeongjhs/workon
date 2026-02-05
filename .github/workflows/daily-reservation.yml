@@ -2,8 +2,8 @@ name: Daily Seat Reservation
 
 on:
   schedule:
-    # Runs at 08:03 KST (23:03 UTC previous day)
-    - cron: '3 23 * * *'
+    # TEST: Runs every 5 minutes for testing
+    - cron: '*/5 * * * *'
   workflow_dispatch:  # Allows manual trigger
 
 jobs:
