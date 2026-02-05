@@ -298,12 +298,13 @@ class CJWorldAuthenticator:
         Returns:
             Reservation success status
         """
-        from datetime import datetime, timedelta
+        from datetime import datetime, timedelta, timezone
         import json
         import holidays
 
-        # Calculate reservation date
-        reserve_date = datetime.now() + timedelta(days=days_ahead)
+        # Calculate reservation date using KST (UTC+9)
+        kst = timezone(timedelta(hours=9))
+        reserve_date = datetime.now(kst) + timedelta(days=days_ahead)
         date_str = reserve_date.strftime("%Y-%m-%d")
         day = reserve_date.day
 
